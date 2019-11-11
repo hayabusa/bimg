@@ -188,6 +188,9 @@ func VipsIsTypeSupported(t ImageType) bool {
 	if t == HEIF {
 		return int(C.vips_type_find_bridge(C.HEIF)) != 0
 	}
+	if t == AVIF {
+		return int(C.vips_type_find_bridge(C.AVIF)) != 0
+	}
 	return false
 }
 
@@ -209,6 +212,9 @@ func VipsIsTypeSupportedSave(t ImageType) bool {
 	}
 	if t == HEIF {
 		return int(C.vips_type_find_save_bridge(C.HEIF)) != 0
+	}
+	if t == AVIF {
+		return int(C.vips_type_find_save_bridge(C.AVIF)) != 0
 	}
 	return false
 }
@@ -654,7 +660,9 @@ func vipsImageType(buf []byte) ImageType {
 		// This is a HEIF file
 		return HEIF
 	}
-
+	if IsTypeSupported(AVIF) {
+		return AVIF
+	}
 	return UNKNOWN
 }
 

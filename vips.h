@@ -34,6 +34,7 @@ enum types {
 	SVG,
 	MAGICK,
 	HEIF,
+	AVIF,
 };
 
 typedef struct {
@@ -162,6 +163,9 @@ vips_type_find_bridge(int t) {
 		return vips_type_find("VipsOperation", "heifload");
 	}
 #endif
+	if (t == AVIF) {
+		return vips_type_find("VipsOperation", "heifload");
+	}
 	return 0;
 }
 
@@ -184,6 +188,9 @@ vips_type_find_save_bridge(int t) {
 		return vips_type_find("VipsOperation", "heifsave_buffer");
 	}
 #endif
+	if (t == AVIF) {
+		return vips_type_find("VipsOperation", "heifsave_buffer");
+	}
 	return 0;
 }
 
@@ -390,6 +397,10 @@ vips_init_image (void *buf, size_t len, int imageType, VipsImage **out) {
 		code = vips_gifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 	} else if (imageType == PDF) {
 		code = vips_pdfload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
+	} else if (imageType == HEIC) {
+		code = vips_heifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
+	} else if (imageType == AVIF) {
+		code = vips_heifload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 	} else if (imageType == SVG) {
 		code = vips_svgload_buffer(buf, len, out, "access", VIPS_ACCESS_RANDOM, NULL);
 #endif
